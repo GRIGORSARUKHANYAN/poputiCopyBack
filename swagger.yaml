@@ -1,0 +1,208 @@
+openapi: 3.0.0
+info:
+  title: My API
+  description: API documentation for my project
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000/api
+    description: Local server
+paths:
+  /auth/login:
+    post:
+      summary: User login
+      description: Authenticate user and return JWT token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: secret123
+      responses:
+        "200":
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Unauthorized
+  /auth/register:
+    post:
+      summary: User register
+      description: Authenticate user 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  example: user@example.com
+                password:
+                  type: string
+                  example: secret123
+      responses:
+        "200":
+          description: Successfully register in
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        "401":
+          description: Unauthorized
+
+  /user/personalInformation:
+    post:
+      summary: Upload user personal information
+      description: Save personal information with different required fields based on user role
+      security:
+        - bearerAuth: []      
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - pasportImage
+                - city
+                - name
+                - surname
+                - pheneNumber
+                - pasportData
+                - birtday
+                - gender
+                - role
+              properties:
+                pasportImage:
+                  type: string
+                  format: binary
+                  description: Passport image (file)
+                city:
+                  type: string
+                  example: "Yerevan"
+                name:
+                  type: string
+                  example: "Grigor"
+                surname:
+                  type: string
+                  example: "Hakobyan"
+                pheneNumber:
+                  type: string
+                  example: "+37499123456"
+                pasportData:
+                  type: string
+                  example: "AB1234567"
+                birtday:
+                  type: string
+                  format: date
+                  example: "1995-06-15"
+                gender:
+                  type: string
+                  enum: [male, female]
+                  example: "male"
+                role:
+                  type: string
+                  enum: [driver, student, user]
+                  description: User role (determines additional fields)
+                  example: "driver"
+                driversLicenseImage:
+                  type: string
+                  format: binary
+                  description: Driver's license image (required if role is 'driver')
+                driversLicense:
+                  type: string
+                  description: Driver's license number (required if role is 'driver')
+                  example: "DL12345678"
+                university:
+                  type: string
+                  description: University name (required if role is 'student')
+                  example: "Yerevan State University"
+      responses:
+        "200":
+          description: Personal information successfully uploaded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Personal information saved successfully"
+        "400":
+          description: Bad request (missing required fields)
+        "401":
+          description: Unauthorized (token missing or invalid)
+
+
+  /user:
+   get:
+      summary: Get user by ID
+      description: Fetches user details based on their unique ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The unique ID of the user
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Successfully retrieved user data
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  user:
+                    type: object
+                    example:
+                      _id: "6527a1f2b3eabc0012345678"
+                      name: "Grigor"
+                      surname: "Hakobyan"
+                      email: "grigor@example.com"
+        "400":
+          description: Invalid user ID format
+        "404":
+          description: User not found
+          
+  /updateProfilePhoto:
+    post:
+      summary: Update profile photo
+      description: Upload and update the user's profile photo
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                profilePhoto:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: Profile photo updated successfully
+        "400":
+          description: Profile photo is required
+        "404":
+          description: User not found          
