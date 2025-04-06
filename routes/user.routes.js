@@ -8,7 +8,7 @@ const userController = new UserController();
 const upload = multer({ storage: multer.memoryStorage() });
 
 
-router.get("/:id", userController.getUserById);
+router.get("/:id",authMiddleware, userController.getUserById);
 router.post(
   "/personalInformation",
   authMiddleware,

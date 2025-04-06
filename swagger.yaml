@@ -242,3 +242,88 @@ paths:
          description: File deleted successfully
        404:
          description: File not found        
+
+  /car/{id}:
+   get:
+     summary: Get a car by ID
+     tags:
+       - Car
+     security:
+       - bearerAuth: []
+     parameters:
+       - in: path
+         name: id
+         required: true
+         schema:
+           type: string
+         description: The ID of the car
+     responses:
+       200:
+         description: Car retrieved successfully
+       401:
+         description: Unauthorized – invalid or missing token
+       404:
+         description: Car not found
+
+
+
+   delete:
+     summary: Delete a car by ID
+     tags:
+       - Car
+     security:
+       - bearerAuth: []
+     parameters:
+       - in: path
+         name: id
+         required: true
+         schema:
+           type: string
+         description: The ID of the car to delete
+     responses:
+       200:
+         description: Car deleted successfully
+       401:
+         description: Unauthorized – invalid or missing token
+       404:
+         description: Car not found
+
+   post:
+     summary: Create a new car
+     tags:
+       - Car
+     security:
+       - bearerAuth: []
+     requestBody:
+       required: true
+       content:
+         multipart/form-data:
+           schema:
+             type: object
+             properties:
+               make:
+                 type: string
+                 description: The make of the car
+               model:
+                 type: string
+                 description: The model of the car
+               year:
+                 type: number
+                 description: The manufacturing year of the car
+               carImages:
+                 type: array
+                 items:
+                   type: string
+                   format: binary
+                 description: Array of car image files
+             required:
+               - make
+               - model
+               - year
+     responses:
+       201:
+         description: Car created successfully
+       400:
+         description: Bad request
+       401:
+         description: Unauthorized – invalid or missing token
