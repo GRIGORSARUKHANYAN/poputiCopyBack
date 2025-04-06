@@ -1,6 +1,6 @@
 import FileService from "../services/file.service.js"; // Ավելացրու `.js`
 
-class FilesController {
+class FileController {
   constructor() {
     this.fileService = new FileService();
   }
@@ -47,4 +47,4 @@ class FilesController {
   };
 }
 
-export default FilesController; 
+export default FileController; 

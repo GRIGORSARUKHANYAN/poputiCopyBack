@@ -154,6 +154,8 @@ paths:
    get:
       summary: Get user by ID
       description: Fetches user details based on their unique ID
+      security:
+      - bearerAuth: []  
       parameters:
         - name: id
           in: path
@@ -206,3 +208,37 @@ paths:
           description: Profile photo is required
         "404":
           description: User not found          
+  file/{id}:
+   get:
+     summary: Get a file by ID
+     security:
+      - bearerAuth: []  
+     parameters:
+       - in: path
+         name: id
+         required: true
+         schema:
+           type: string
+         description: The ID of the file
+     responses:
+       200:
+         description: File retrieved successfully
+       404:
+         description: File not found
+
+   delete:
+     summary: Delete a file by ID
+     security:
+      - bearerAuth: []  
+     parameters:
+       - in: path
+         name: id
+         required: true
+         schema:
+           type: string
+         description: The ID of the file
+     responses:
+       200:
+         description: File deleted successfully
+       404:
+         description: File not found        
