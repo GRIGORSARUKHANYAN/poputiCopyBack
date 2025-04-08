@@ -4,6 +4,7 @@ import UserDocument from "../models/userModel.js"; // Ձեր մոդելը
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 
 
@@ -29,6 +30,7 @@ class UserService {
 
 
   async udateProfilePhoto(userId,data) {
+
 
     const updatedUser = await this.users.findByIdAndUpdate( new mongoose.Types.ObjectId(userId), data, { new: true });
     console.log(userId,mongoose.Types.ObjectId.isValid(userId),data,updatedUser);

@@ -10,6 +10,7 @@ class UserController {
   }
   udateProfilePhoto = async (req, res, next) => {
     try {
+      
       const token = req.header("Authorization")?.split("Bearer ")[1];
       const decoded = jwt.verify(token, process.env.SECRET_KEY);
   
@@ -21,7 +22,8 @@ class UserController {
         return res.status(400).json({  message: "data is invalid" });
       }
       let data={profilePhoto:a._id}
-let userData = await this.userService.udateProfilePhoto(decoded._id,data)
+      
+let userData = await this.userService.udateProfilePhoto(decoded.id,data)
 
 
       res.status(201).json({ data: userData, message: "update Profile Photo successfully" });

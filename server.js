@@ -3,6 +3,7 @@ import authRoutes from "./routes/auth.routes.js";
 import fileRoutes from "./routes/file.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import carRoutes from "./routes/car.routes.js";
+import JourneyRoutes from "./routes/journey.routes.js";
 
 import swaggerUI from "swagger-ui-express";
 import yaml from "yamljs";
@@ -29,6 +30,7 @@ app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/file", fileRoutes);
 app.use("/car", carRoutes);
+app.use("/journey", JourneyRoutes);
 
 
 

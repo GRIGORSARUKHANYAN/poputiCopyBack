@@ -21,7 +21,7 @@ class CarService {
   
     let car=await this.cars.findOne({_id:carId})
     if (! car) {
-      throw new HttpException(404, "user is not found");
+      throw new HttpException(404, "car is not found");
     }
     return car
   }

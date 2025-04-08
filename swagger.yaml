@@ -10,6 +10,8 @@ paths:
   /auth/login:
     post:
       summary: User login
+      tags:
+       - auth
       description: Authenticate user and return JWT token
       requestBody:
         required: true
@@ -39,6 +41,8 @@ paths:
   /auth/register:
     post:
       summary: User register
+      tags:
+       - auth      
       description: Authenticate user 
       requestBody:
         required: true
@@ -69,6 +73,8 @@ paths:
   /user/personalInformation:
     post:
       summary: Upload user personal information
+      tags:
+       - user      
       description: Save personal information with different required fields based on user role
       security:
         - bearerAuth: []      
@@ -150,10 +156,12 @@ paths:
           description: Unauthorized (token missing or invalid)
 
 
-  /user:
+  /user/{id}:
    get:
       summary: Get user by ID
       description: Fetches user details based on their unique ID
+      tags:
+       - user      
       security:
       - bearerAuth: []  
       parameters:
@@ -189,6 +197,8 @@ paths:
   /updateProfilePhoto:
     post:
       summary: Update profile photo
+      tags:
+       - user      
       description: Upload and update the user's profile photo
       security:
         - bearerAuth: []
@@ -211,6 +221,8 @@ paths:
   file/{id}:
    get:
      summary: Get a file by ID
+     tags:
+       - file     
      security:
       - bearerAuth: []  
      parameters:
@@ -228,6 +240,8 @@ paths:
 
    delete:
      summary: Delete a file by ID
+     tags:
+       - file     
      security:
       - bearerAuth: []  
      parameters:
@@ -327,3 +341,214 @@ paths:
          description: Bad request
        401:
          description: Unauthorized – invalid or missing token
+
+
+  /journey/:
+    post:
+      summary: Create a journey
+      description: Only authenticated users can create a journey
+      tags:
+       - journey
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                from:
+                  type: string
+                  example: Yerevan
+                to:
+                  type: string
+                  example: Gyumri
+                date:
+                  type: string
+                  format: date
+                  example: 2025-04-15
+                count:
+                  type: number
+                  example: 3
+                car:
+                  type: string
+                  description: ObjectId of the car
+                  example: 643f1b29e7b4d2a1a23b4567
+              required:
+                - from
+                - to
+                - date
+                - count
+                - car
+      responses:
+        "201":
+          description: Journey successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Journey created
+                  journeyId:
+                    type: string
+                    example: 64401b2ce9b7ab3456fffa22
+        "401":
+          description: Unauthorized
+        "400":
+          description: Bad Request         
+
+    get:
+      summary: Get all journeys
+      description: Returns a list of all journeys (accessible to authenticated users)
+      tags:
+        - journey
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: A list of journeys
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                      example: 643f1b29e7b4d2a1a23b4567
+                    from:
+                      type: string
+                      example: Yerevan
+                    to:
+                      type: string
+                      example: Gyumri
+                    date:
+                      type: string
+                      format: date
+                      example: 2025-04-15
+                    count:
+                      type: number
+                      example: 3
+                    car:
+                      type: string
+                      description: ObjectId of the car
+                      example: 643a1b99f2aaed1234c9876f
+        "401":
+          description: Unauthorized      
+  /journey/{id}:
+    get:
+      summary: Get journey by ID
+      description: Returns a single journey by its ID (authenticated users only)
+      tags:
+        - journey
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the journey to retrieve
+          schema:
+            type: string
+            example: 643f1b29e7b4d2a1a23b4567
+      responses:
+        "200":
+          description: Journey found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: 643f1b29e7b4d2a1a23b4567
+                  from:
+                    type: string
+                    example: Yerevan
+                  to:
+                    type: string
+                    example: Gyumri
+                  date:
+                    type: string
+                    format: date
+                    example: 2025-04-15
+                  count:
+                    type: number
+                    example: 3
+                  car:
+                    type: string
+                    example: 643a1b99f2aaed1234c9876f
+        "404":
+          description: Journey not found
+        "401":
+          description: Unauthorized            
+
+    delete:
+      summary: Delete a journey
+      description: Deletes a journey by its ID (only for authenticated users, usually the creator)
+      tags:
+        - journey
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the journey to delete
+          schema:
+            type: string
+            example: 643f1b29e7b4d2a1a23b4567
+      responses:
+        "200":
+          description: Journey deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Journey deleted
+        "404":
+          description: Journey not found
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden (e.g. not the owner of the journey)
+
+  /journey/joinJourney/{id}:
+    put:
+      summary: Join a journey
+      description: Authenticated user joins a journey by its ID
+      tags:
+        - journey
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the journey to join
+          schema:
+            type: string
+            example: 643f1b29e7b4d2a1a23b4567
+      responses:
+        "200":
+          description: Successfully joined the journey
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successfully joined the journey
+                  journeyId:
+                    type: string
+                    example: 643f1b29e7b4d2a1a23b4567
+        "400":
+          description: Cannot join (e.g. already joined or
