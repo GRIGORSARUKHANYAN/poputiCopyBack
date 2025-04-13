@@ -38,13 +38,14 @@ const token = jwt.sign({ id: user.id, email: user.email,role:user.role }, proces
 
 
   async createUser(data) {
-    console.log();
 
 const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 function isValidEmail(email) {
   return emailRegex.test(email);
 }
 if (!data.role||!data.email || !data.password ||(data.role!=="driver"&&data.role!=="student")|| !isValidEmail(data.email)) {
+  console.log(data);
+ 
   throw new HttpException(409, "data is invalid");
 }
 if (await this.users.findOne({email:data.email})) {

@@ -57,6 +57,9 @@ paths:
                 password:
                   type: string
                   example: secret123
+                role:
+                  type: string
+                  example: driver || student                  
       responses:
         "200":
           description: Successfully register in
