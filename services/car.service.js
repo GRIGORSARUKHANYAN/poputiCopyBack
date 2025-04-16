@@ -48,9 +48,9 @@ class CarService {
 
       // 
         async createCar(data) {
-          console.log(data);
+
           
-      if (!data.make||!data.model || !data.year ||!data.driver||!data.carImages) {
+      if (!data.make||!data.model || !data.year ||!data.driver) {
         throw new HttpException(409, "data is invalid");
       }
         return  await this.cars.create(data);
