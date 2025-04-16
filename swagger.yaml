@@ -344,6 +344,27 @@ paths:
          description: Bad request
        401:
          description: Unauthorized – invalid or missing token
+  /car/carByUserId/{id}:
+   get:
+     summary: Get a car by UserID
+     tags:
+       - Car
+     security:
+       - bearerAuth: []
+     parameters:
+       - in: path
+         name: id
+         required: true
+         schema:
+           type: string
+         description: The ID of the user
+     responses:
+       200:
+         description: Cars retrieved successfully
+       401:
+         description: Unauthorized – invalid or missing token
+       404:
+         description: Cars not found
 
 
   /journey/:
