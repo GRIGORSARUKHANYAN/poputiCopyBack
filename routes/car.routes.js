@@ -8,7 +8,7 @@ const carController = new CarController();
 const upload = multer({ storage: multer.memoryStorage() });
 
 
-router.get("carByUserId/:id",authMiddleware, carController.getCarByUserId);
+router.get("/carByUserId/:id",authMiddleware, carController.getCarByUserId);
 router.get("/:id",authMiddleware, carController.getCarById);
 
 router.post(

@@ -30,7 +30,7 @@ class CarService {
       throw new HttpException(400, "Invalid car ID format");
     }
   
-    let car=await this.cars.findOne({driver:userId})
+    let car=await this.cars.find({driver:userId})
     if (! car) {
       throw new HttpException(404, "car is not found");
     }
