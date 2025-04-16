@@ -32,7 +32,7 @@ if (!isPasswordValid) {
 const token = jwt.sign({ id: user.id, email: user.email,role:user.role }, process.env.SECRET_KEY, {
   expiresIn: "10000000h", // Թոքենի վավերականությունը՝ 1 ժամ
 });
-  return  token;
+  return  {token:token,id:user._id};
   }
 
 
