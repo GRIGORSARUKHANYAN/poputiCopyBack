@@ -25,7 +25,17 @@ class CarService {
     }
     return car
   }
-
+  async getCarByUserId(userId) {
+    if (!ObjectId.isValid(userId)) {
+      throw new HttpException(400, "Invalid car ID format");
+    }
+  
+    let car=await this.cars.findOne({driver:userId})
+    if (! car) {
+      throw new HttpException(404, "car is not found");
+    }
+    return car
+  }
 
   // async updateCar(carId,data) {
 

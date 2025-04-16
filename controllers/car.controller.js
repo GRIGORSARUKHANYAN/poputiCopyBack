@@ -39,7 +39,17 @@ let carData = await this.carService.getCarById(carId)
     }
   };
 
+  getCarByUserId = async (req, res, next) => {
+    try {
+      const userId = req.params.id;
 
+let carData = await this.carService.getCarByUserId(userId)
+
+      res.status(201).json({ data: carData, message: "Car get successfully" });
+    } catch (error) {
+      next(error);
+    }
+  };
 
 
 
