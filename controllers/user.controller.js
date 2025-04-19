@@ -25,6 +25,7 @@ class UserController {
       
 let userData = await this.userService.udateProfilePhoto(decoded.id,data)
 
+console.log("kkkkkkkkkkkk",userData);
 
       res.status(201).json({ data: userData, message: "update Profile Photo successfully" });
     } catch (error) {

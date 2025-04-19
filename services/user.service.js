@@ -34,16 +34,16 @@ class UserService {
 
     const updatedUser = await this.users.findByIdAndUpdate( new mongoose.Types.ObjectId(userId), data, { new: true });
     console.log(userId,mongoose.Types.ObjectId.isValid(userId),data,updatedUser);
-        return userId
+        return updatedUser.profilePhoto
       }
     
 
   async personalInformation(userId,data) {
-console.log(userId);
-
-
-
+    
+    
+    
     const updatedUser = await this.users.findByIdAndUpdate(userId, data, { new: true });
+
     return updatedUser
   }
 
