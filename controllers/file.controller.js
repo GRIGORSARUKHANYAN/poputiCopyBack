@@ -21,20 +21,26 @@ class FileController {
     }
   };
 
+
   getFileById = async (req, res, next) => {
-    try {
-      const fileId = req.params.id;
-      const findeFile = await this.fileService.findFileById(fileId);
-      res.setHeader("Content-Type", "application/octet-stream");
-      res.setHeader(
-        "Content-Disposition",
-        `attachment; filename=${findeFile.fileName}`
-      );
-      res.send(findeFile.buffer);
-    } catch (error) {
-      next(error);
-    }
-  };
+      try {
+        const fileId = req.params.id;
+        const findeFile = await this.fileService.findFileById(fileId);
+  
+
+        const encodedFileName = encodeURIComponent(findeFile.fileName);
+  
+        res.setHeader("Content-Type", "application/octet-stream");
+        res.setHeader(
+          "Content-Disposition",
+          `attachment; filename="${encodedFileName}"`
+        );
+
+        res.send(findeFile.buffer);
+      } catch (error) {
+        next(error);
+      }
+    };
 
   deleteFile = async (req, res, next) => {
     try {
