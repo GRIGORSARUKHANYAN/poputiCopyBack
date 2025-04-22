@@ -14,8 +14,12 @@ router.get("/:id",authMiddleware, carController.getCarById);
 router.post(
   "/",
   authMiddleware,
+  upload.fields([
+    { name: "carImages",  },
+  ]),
   carController.createCar
 );
+
 router.delete("/:id",authMiddleware, carController.deleteCar);
 
 

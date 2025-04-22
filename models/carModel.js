@@ -9,7 +9,7 @@ const CarSchema = new Schema({
     ref: "User",
   },
 
-  images: [{
+  carImages: [{
     type: Schema.Types.ObjectId,
     ref: "File",
   }],
